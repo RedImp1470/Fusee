@@ -2,6 +2,7 @@ using CommunityToolkit.Diagnostics;
 using Fusee.Base.Core;
 using Fusee.Engine.Common;
 using Fusee.Engine.Core.Effects;
+using Fusee.Engine.Core.Primitives;
 using Fusee.Engine.Core.Scene;
 using Fusee.Math.Core;
 using Fusee.Xene;
@@ -619,7 +620,7 @@ namespace Fusee.Engine.Core
                 return;
             }
 
-            if (CurrentCameraResult.Camera == default)
+            if (CurrentCameraResult.Camera == default(Camera))
                 return;
 
             var size = CurrentCameraResult.Camera.GetViewportInPx(_canvasWidth, _canvasHeight);
@@ -719,7 +720,7 @@ namespace Fusee.Engine.Core
                 return;
             }
 
-            if (CurrentCameraResult.Camera == default)
+            if (CurrentCameraResult.Camera == default(Camera))
                 return;
 
             var size = CurrentCameraResult.Camera.GetViewportInPx(_canvasWidth, _canvasHeight);
@@ -777,7 +778,7 @@ namespace Fusee.Engine.Core
                 mesh.BoundingBox = new(mesh.Vertices.AsReadOnlySpan);
             }
 
-            if (mesh is not Primitives.Plane && (mesh.BoundingBox.Size.x <= 0f || mesh.BoundingBox.Size.y <= 0f || mesh.BoundingBox.Size.z <= 0f))
+            if (mesh is not Plane && mesh is not NineSlicePlane && mesh is not Circle && mesh is not Line && (mesh.BoundingBox.Size.x <= 0f || mesh.BoundingBox.Size.y <= 0f || mesh.BoundingBox.Size.z <= 0f))
             {
                 Diagnostics.Debug($"Size of current bounding box is 0 for one or more dimensions. Picking not possible.");
                 return;

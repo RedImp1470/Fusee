@@ -48,7 +48,7 @@ namespace Fusee.PointCloud.Common
         /// <param name="pointSizeMode">The <see cref="PointSizeMode"/>.</param>
         /// <param name="shape">The <see cref="PointShape"/>.</param>
         /// <returns></returns>
-        public static ShaderEffect ForDepthPassInstanced(int size, PointSizeMode pointSizeMode, PointShape shape)
+        public static ShaderEffect ForDepthPassInstanced(float size, PointSizeMode pointSizeMode, PointShape shape)
         {
             return new ShaderEffect(
 

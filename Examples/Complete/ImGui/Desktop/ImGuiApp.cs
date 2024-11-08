@@ -111,17 +111,13 @@ namespace Fusee.Examples.FuseeImGui.Desktop
             ImGui.Begin("Viewport",
               ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse);
 
-            var parentMin = ImGui.GetWindowContentRegionMin();
-            var parentMax = ImGui.GetWindowContentRegionMax();
-            var size = parentMax - parentMin;
+            var size = ImGui.GetContentRegionAvail();
 
             // Using a Child allow to fill all the space of the window.
             // It also allows customization
             ImGui.BeginChild("GameRender", size, ImGuiChildFlags.None, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove);
 
-            var fuseeViewportMin = ImGui.GetWindowContentRegionMin();
-            var fuseeViewportMax = ImGui.GetWindowContentRegionMax();
-            var fuseeViewportSize = fuseeViewportMax - fuseeViewportMin;
+            var fuseeViewportSize = ImGui.GetContentRegionAvail();
 
             ImGui.Image(_fuControl.RenderToTexture((int)size.X, (int)size.Y), fuseeViewportSize,
                 new Vector2(0, 1),

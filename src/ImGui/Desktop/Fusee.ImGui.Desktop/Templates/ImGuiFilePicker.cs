@@ -479,7 +479,7 @@ namespace Fusee.ImGuiImp.Desktop.Templates
 
                             ImGui.PushStyleColor(ImGuiCol.Text, FolderColor.ToUintColor());
 
-                            if (ImGui.Selectable(directory.Name + "/", CurrentlySelectedFolder == directory, ImGuiSelectableFlags.DontClosePopups | ImGuiSelectableFlags.AllowDoubleClick))
+                            if (ImGui.Selectable(directory.Name + "/", CurrentlySelectedFolder == directory, ImGuiSelectableFlags.NoAutoClosePopups | ImGuiSelectableFlags.AllowDoubleClick))
                             {
                                 SelectedFile = null;
                                 CurrentlySelectedFolder = directory;
@@ -501,7 +501,7 @@ namespace Fusee.ImGuiImp.Desktop.Templates
 
                             ImGui.PushStyleColor(ImGuiCol.Header, SelectedColor.ToUintColor());
 
-                            if (ImGui.Selectable(name, SelectedFile?.Name == name, ImGuiSelectableFlags.DontClosePopups | ImGuiSelectableFlags.AllowDoubleClick))
+                            if (ImGui.Selectable(name, SelectedFile?.Name == name, ImGuiSelectableFlags.NoAutoClosePopups | ImGuiSelectableFlags.AllowDoubleClick))
                             {
                                 if (ImGui.IsMouseDoubleClicked(0))
                                 {

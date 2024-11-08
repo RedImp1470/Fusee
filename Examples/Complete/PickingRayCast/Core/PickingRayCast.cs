@@ -165,7 +165,7 @@ namespace Fusee.Examples.PickingRayCast.Core
                     if (!float2.PointInRectangle(new float2(camRect.Left, camRect.Top), new float2(camRect.Right, camRect.Bottom), Input.Mouse.Position))
                         continue;
 
-                    if (pickCam == default || camRes.Camera.Layer > pickCam.Camera.Layer)
+                    if (pickCam == default(CameraResult) || camRes.Camera.Layer > pickCam.Camera.Layer)
                     {
                         pickCam = camRes;
                         pickCamRect = camRect;

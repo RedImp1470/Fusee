@@ -129,17 +129,13 @@ namespace Fusee.Examples.PointCloudPotree2.Gui
             ImGui.Begin("Viewport",
               ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse);
 
-            var parentMin = ImGui.GetWindowContentRegionMin();
-            var parentMax = ImGui.GetWindowContentRegionMax();
-            var size = parentMax - parentMin;
+            var size = ImGui.GetContentRegionAvail();
 
             // Using a Child allow to fill all the space of the window.
             // It also allows customization
             ImGui.BeginChild("GameRender", size, ImGuiChildFlags.None, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove);
 
-            var fuseeViewportMin = ImGui.GetWindowContentRegionMin();
-            var fuseeViewportMax = ImGui.GetWindowContentRegionMax();
-            var fuseeViewportSize = fuseeViewportMax - fuseeViewportMin;
+            var fuseeViewportSize = ImGui.GetContentRegionAvail();
             var fuseeViewportPos = ImGui.GetWindowPos();
 
             var hndl = _fuControl.RenderToTexture((int)fuseeViewportSize.X, (int)fuseeViewportSize.Y);

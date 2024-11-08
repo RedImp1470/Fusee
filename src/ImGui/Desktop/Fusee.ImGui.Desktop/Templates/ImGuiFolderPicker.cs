@@ -429,7 +429,7 @@ namespace Fusee.ImGuiImp.Desktop.Templates
                     {
                         ImGui.PushStyleColor(ImGuiCol.Text, FolderColor.ToUintColor());
                         ImGui.PushStyleColor(ImGuiCol.Header, SelectedColor.ToUintColor());
-                        if (ImGui.Selectable(name + "/", CurrentlySelectedFolder?.Name == name, ImGuiSelectableFlags.DontClosePopups | ImGuiSelectableFlags.AllowDoubleClick))
+                        if (ImGui.Selectable(name + "/", CurrentlySelectedFolder?.Name == name, ImGuiSelectableFlags.NoAutoClosePopups | ImGuiSelectableFlags.AllowDoubleClick))
                         {
                             if (ImGui.IsMouseDoubleClicked(0))
                             {
@@ -448,7 +448,7 @@ namespace Fusee.ImGuiImp.Desktop.Templates
                     {
                         // just print the files, but with lighter color
                         ImGui.PushStyleColor(ImGuiCol.Text, LightFileColor.ToUintColor());
-                        ImGui.Selectable(name, false, ImGuiSelectableFlags.DontClosePopups);
+                        ImGui.Selectable(name, false, ImGuiSelectableFlags.NoAutoClosePopups);
                         ImGui.PopStyleColor();
                     }
                 }
