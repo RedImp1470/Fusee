@@ -70,13 +70,13 @@ namespace Fusee.ImGuiImp.Desktop
             if (!_initialized) return;
             if (_isShuttingDown) return;
 
-            // HACK(mr): Fixme, don't know why
-            //Input.Instance.PreUpdate();
-
-            base.DoUpdate();
-            _controller.UpdateImGui(DeltaTimeUpdate);
-
-            //Input.Instance.PostUpdate();
+            // Check if window is minimized - else imgui will throw an assert:
+            // ((g.FrameCount == 0 || g.FrameCountEnded == g.FrameCount)  && "Forgot to call Render() or EndFrame() at the end of the previous frame?"
+            if (Width > 0 && Height > 0)
+            {
+                base.DoUpdate();
+                _controller.UpdateImGui(DeltaTimeUpdate);
+            }
         }
 
         public override void DoRender()
@@ -84,7 +84,6 @@ namespace Fusee.ImGuiImp.Desktop
             if (!_initialized) return;
             if (_controller.GameWindowWidth <= 0) return;
             if (_isShuttingDown) return;
-
             Input.Instance.PreUpdate();
 
             base.DoRender();

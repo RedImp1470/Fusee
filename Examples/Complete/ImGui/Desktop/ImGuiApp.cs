@@ -34,6 +34,9 @@ namespace Fusee.Examples.FuseeImGui.Desktop
         {
             SetImGuiDesign();
 
+            // Enable Dockspace
+            ImGui.GetIO().ConfigFlags |= ImGuiConfigFlags.DockingEnable;
+
             _fuControl = new SceneToTexture(RC);
             _fuControl.Init();
 
@@ -68,9 +71,6 @@ namespace Fusee.Examples.FuseeImGui.Desktop
 
         public override void RenderAFrame()
         {
-            // Enable Dockspace
-            ImGui.GetIO().ConfigFlags |= ImGuiConfigFlags.DockingEnable;
-
             // Set Window flags for Dockspace
             var wndDockspaceFlags =
                     ImGuiWindowFlags.NoDocking
@@ -126,8 +126,9 @@ namespace Fusee.Examples.FuseeImGui.Desktop
             // check if mouse is inside window, if true, accept update() inputs
             _isMouseInsideFuControl = ImGui.IsItemHovered();
 
-            ImGui.EndChild();
-            ImGui.End();
+            ImGui.EndChild();   //GameRender
+            ImGui.End();        //Viewport
+            ImGui.End();        //DockSpace
 
             ImGui.Begin("ImageWnd");
 
@@ -316,7 +317,7 @@ namespace Fusee.Examples.FuseeImGui.Desktop
             colors[(int)ImGuiCol.TextSelectedBg] = new Vector4(0.26f, 0.59f, 0.98f, 0.35f);
             //colors[(int)ImGuiCol.ModalWindowDarkening] = new Vector4(0.20f, 0.20f, 0.20f, 0.35f);
             colors[(int)ImGuiCol.DragDropTarget] = new Vector4(0.26f, 0.59f, 0.98f, 0.95f);
-            colors[(int)ImGuiCol.NavHighlight] = colors[(int)ImGuiCol.HeaderHovered];
+            //colors[(int)ImGuiCol.NavHighlight] = colors[(int)ImGuiCol.HeaderHovered];
             colors[(int)ImGuiCol.NavWindowingHighlight] = new Vector4(0.70f, 0.70f, 0.70f, 0.70f);
 
             colors[(int)ImGuiCol.TableBorderLight] = new Vector4(0.70f, 0.70f, 0.70f, 0.70f);

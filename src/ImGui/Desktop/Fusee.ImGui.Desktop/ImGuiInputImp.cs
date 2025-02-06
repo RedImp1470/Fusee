@@ -221,8 +221,7 @@ namespace Fusee.ImGuiImp.Desktop
             if (_hndl.Target != null)
             {
                 /// overwrite clipboard copy (Strg+C). Use OpenTK <see cref="GameWindow"/> implementation
-                io.SetClipboardTextFn =
-                    Marshal.GetFunctionPointerForDelegate<SetClipboardTextFn>((SetClipboardTextFn)_hndl.Target);
+                //io.SetClipboardTextFn = Marshal.GetFunctionPointerForDelegate<SetClipboardTextFn>((SetClipboardTextFn)_hndl.Target);
             }
 
             Input.Keyboard.ButtonValueChanged += (s, e) =>
