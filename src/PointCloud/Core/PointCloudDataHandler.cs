@@ -168,7 +168,7 @@ namespace Fusee.PointCloud.Core
             {
                 if (isDirty)
                 {
-                    _updateFromInvalidateCache = _visPtCache.GetKeys.ToHashSet();
+                    _updateFromInvalidateCache = _visPtCache.Keys.ToHashSet();
                 }
             };
 
