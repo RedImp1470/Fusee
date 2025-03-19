@@ -241,7 +241,12 @@ namespace Fusee.ImGuiImp.Desktop
             io.DeltaTime = deltaSeconds; // DeltaTime is in seconds.
         }
 
-        public void UpdateImGui(float DeltaTimeUpdate)
+        internal void NewFrame()
+        {
+            ImGui.NewFrame();
+        }
+
+        internal void UpdateImGui(float DeltaTimeUpdate)
         {
             SetPerFrameImGuiData(DeltaTimeUpdate);
             ImGuiInputImp.UpdateImGuiInput(_scaleFactor);
@@ -250,10 +255,9 @@ namespace Fusee.ImGuiImp.Desktop
                 RecreateFontAtlas = false;
                 RecreateFontDeviceTexture();
             }
-            ImGui.NewFrame();
         }
 
-        public void RenderImGui()
+        internal void RenderImGui()
         {
             ImGui.Render();
             RenderImDrawData(ImGui.GetDrawData());
