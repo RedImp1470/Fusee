@@ -69,9 +69,8 @@ namespace Fusee.ImGuiImp.Desktop
         {
             if (!_initialized) return;
             if (_isShuttingDown) return;
-            //Update ImGUi first, so all parameters are set correctly ( e.g. Canvas WorkSize)
-            _controller.UpdateImGui(DeltaTimeUpdate);
             base.DoUpdate();
+            _controller.UpdateImGui(DeltaTimeUpdate);
         }
 
         public override void DoRender()
