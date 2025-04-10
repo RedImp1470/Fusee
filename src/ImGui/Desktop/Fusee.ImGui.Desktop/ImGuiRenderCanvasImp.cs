@@ -61,7 +61,9 @@ namespace Fusee.ImGuiImp.Desktop
         public override void DoInit()
         {
             _controller.InitImGUI(14, "Assets/Lato-Black.ttf");
+            
             base.DoInit();
+            ImGuiController.RecreateFontDeviceTexture();
             _initialized = true;
         }
 
@@ -79,6 +81,9 @@ namespace Fusee.ImGuiImp.Desktop
             if (_controller.GameWindowWidth <= 0) return;
             if (_isShuttingDown) return;
             Input.Instance.PreUpdate();
+
+            if (ImGuiController.RecreateFontAtlas)
+                ImGuiController.RecreateFontDeviceTexture();
 
             _controller.NewFrame();
 

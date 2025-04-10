@@ -203,7 +203,7 @@ namespace Fusee.ImGuiImp.Desktop
         /// Call this method after calling <see cref="ImFontAtlasPtr.AddFontFromFileTTF(string, float)"/>
         /// to re-create and bind the font texture
         /// </summary>
-        private static unsafe void RecreateFontDeviceTexture()
+        internal static unsafe void RecreateFontDeviceTexture()
         {
             ImGuiIOPtr io = ImGui.GetIO();
             io.Fonts.GetTexDataAsRGBA32(out IntPtr pixels, out int width, out int height, out int bytesPerPixel);
@@ -250,11 +250,7 @@ namespace Fusee.ImGuiImp.Desktop
         {
             SetPerFrameImGuiData(DeltaTimeUpdate);
             ImGuiInputImp.UpdateImGuiInput(_scaleFactor);
-            if (RecreateFontAtlas)
-            {
-                RecreateFontAtlas = false;
-                RecreateFontDeviceTexture();
-            }
+
         }
 
         internal void RenderImGui()
