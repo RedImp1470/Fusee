@@ -17,7 +17,7 @@ namespace Fusee.ImGuiImp.Desktop
         /// Triggers the recreation of the FontAtlas in the next Update and before ImGui.NextFrame is called.
         /// CAUTION: do not try to load and use a new font in the same frame - this will cause a Access Violation.
         /// </summary>
-        public static bool RecreateFontAtlas = true;
+        public static bool RecreateFontAtlas = false;
 
         private static int _vertexArray;
         private static int _vertexBuffer;
@@ -225,6 +225,8 @@ namespace Fusee.ImGuiImp.Desktop
 
             io.Fonts.SetTexID(new IntPtr(id));
             io.Fonts.ClearTexData();
+
+            RecreateFontAtlas = false;
         }
 
 
