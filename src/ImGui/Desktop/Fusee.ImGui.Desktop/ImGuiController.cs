@@ -1,4 +1,4 @@
-﻿using Fusee.Base.Core;
+using Fusee.Base.Core;
 using Fusee.Engine.Imp.Graphics.Desktop;
 using ImGuiNET;
 using OpenTK.Graphics.OpenGL;
@@ -232,7 +232,8 @@ namespace Fusee.ImGuiImp.Desktop
 
         private void SetPerFrameImGuiData(float deltaSeconds)
         {
-            _gw.TryGetCurrentMonitorScale(out var hScale, out var vScale);
+            if (!_gw.TryGetCurrentMonitorScale(out var hScale, out var vScale))
+                throw new ArgumentException("Couldn't get the current monitor scale!");
             _scaleFactor = new Vector2(hScale, vScale);
             var displaySizeX = GameWindowWidth / _scaleFactor.X;
             var displaySizeY = GameWindowHeight / _scaleFactor.Y;
