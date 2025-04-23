@@ -71,11 +71,12 @@ namespace Fusee.Engine.Imp.Graphics.Desktop
         public RenderCanvasGameWindow(RenderCanvasImp renderCanvasImp, int width, int height, bool antiAliasing, bool startVisible = true, int minimumWidth = 1280, int minimumHeight = 720)
             : base(new GameWindowSettings(), new NativeWindowSettings
             {
-                Size = new OpenTK.Mathematics.Vector2i(width, height),
+                ClientSize = new OpenTK.Mathematics.Vector2i(width, height),
                 Profile = OpenTK.Windowing.Common.ContextProfile.Core,
                 Flags = OpenTK.Windowing.Common.ContextFlags.ForwardCompatible,
                 StartVisible = startVisible,
-                MinimumSize = new OpenTK.Mathematics.Vector2i(minimumWidth, minimumHeight)
+                MinimumClientSize = new OpenTK.Mathematics.Vector2i(minimumWidth, minimumHeight),
+                
             })
         {
             _renderCanvasImp = renderCanvasImp;
