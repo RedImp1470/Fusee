@@ -92,7 +92,9 @@ namespace Fusee.ImGuiImp.Desktop
 
             io.BackendFlags |= ImGuiBackendFlags.RendererHasVtxOffset;
             io.ConfigFlags |= ImGuiConfigFlags.NavEnableKeyboard;
-
+            io.ConfigFlags |= ImGuiConfigFlags.DpiEnableScaleFonts;
+            io.ConfigFlags |= ImGuiConfigFlags.DpiEnableScaleViewports;
+            
             io.ConfigInputTrickleEventQueue = false;
 
             CreateDeviceResources();
@@ -242,6 +244,7 @@ namespace Fusee.ImGuiImp.Desktop
             io.DisplaySize = new System.Numerics.Vector2(displaySizeX, displaySizeY);
             io.DisplayFramebufferScale = _scaleFactor;
             io.DeltaTime = deltaSeconds; // DeltaTime is in seconds.
+            ImGui.GetMainViewport().DpiScale = 1/_scaleFactor.X;
         }
 
         internal void NewFrame()
