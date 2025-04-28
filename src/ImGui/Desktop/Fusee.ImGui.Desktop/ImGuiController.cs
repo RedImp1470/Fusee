@@ -60,7 +60,6 @@ namespace Fusee.ImGuiImp.Desktop
 
         public ImGuiController(GameWindow gw)
         {
-            WindowResized(gw.Size.X, gw.Size.Y);
             _gw = (RenderCanvasGameWindow)gw;
         }
 
@@ -68,6 +67,8 @@ namespace Fusee.ImGuiImp.Desktop
         {
             (GameWindowWidth, GameWindowHeight) = (width, height);
             GL.Viewport(0, 0, GameWindowWidth, GameWindowHeight);
+            _scaleFactor = GetDpiScaleFactor();
+            SetImGuiDpiScale(_scaleFactor);
         }
 
         /// <summary>
@@ -94,11 +95,13 @@ namespace Fusee.ImGuiImp.Desktop
             io.ConfigFlags |= ImGuiConfigFlags.NavEnableKeyboard;
             io.ConfigFlags |= ImGuiConfigFlags.DpiEnableScaleFonts;
             io.ConfigFlags |= ImGuiConfigFlags.DpiEnableScaleViewports;
-            
+
             io.ConfigInputTrickleEventQueue = false;
 
             CreateDeviceResources();
-            SetPerFrameImGuiData(1f / 60f);
+            SetImGuiDeltaTime(1f / 60f);
+            _scaleFactor = GetDpiScaleFactor();
+            SetImGuiDpiScale(_scaleFactor);
             ImGuiInputImp.InitImGuiInput(_gw);
 
             // TODO(mr): Let user decide
@@ -232,19 +235,27 @@ namespace Fusee.ImGuiImp.Desktop
         }
 
 
-        private void SetPerFrameImGuiData(float deltaSeconds)
+        private void SetImGuiDeltaTime(float deltaSeconds)
+        {
+            ImGui.GetIO().DeltaTime = deltaSeconds;
+        }
+
+        private Vector2 GetDpiScaleFactor()
         {
             if (!_gw.TryGetCurrentMonitorScale(out var hScale, out var vScale))
                 throw new ArgumentException("Couldn't get the current monitor scale!");
-            _scaleFactor = new Vector2(hScale, vScale);
+            return new Vector2(hScale, vScale);
+        }
+
+        private void SetImGuiDpiScale(Vector2 scaleFactor)
+        {
             var displaySizeX = GameWindowWidth / _scaleFactor.X;
             var displaySizeY = GameWindowHeight / _scaleFactor.Y;
 
             ImGuiIOPtr io = ImGui.GetIO();
-            io.DisplaySize = new System.Numerics.Vector2(displaySizeX, displaySizeY);
+            io.DisplaySize = new Vector2(displaySizeX, displaySizeY);
             io.DisplayFramebufferScale = _scaleFactor;
-            io.DeltaTime = deltaSeconds; // DeltaTime is in seconds.
-            ImGui.GetMainViewport().DpiScale = 1/_scaleFactor.X;
+            ImGui.GetMainViewport().DpiScale = 1 / _scaleFactor.X;
         }
 
         internal void NewFrame()
@@ -253,10 +264,15 @@ namespace Fusee.ImGuiImp.Desktop
         }
 
         internal void UpdateImGui(float DeltaTimeUpdate)
-        {
-            SetPerFrameImGuiData(DeltaTimeUpdate);
+        {            
+            SetImGuiDeltaTime(DeltaTimeUpdate);
+            var tmpScaleFactor = GetDpiScaleFactor();
+            if (tmpScaleFactor != _scaleFactor)
+            {
+                _scaleFactor = tmpScaleFactor;
+                SetImGuiDpiScale(_scaleFactor);
+            }
             ImGuiInputImp.UpdateImGuiInput(_scaleFactor);
-
         }
 
         internal void RenderImGui()
