@@ -1,4 +1,4 @@
-﻿using Fusee.Base.Core;
+using Fusee.Base.Core;
 using Fusee.Engine.Common;
 using Fusee.Engine.Core;
 using Fusee.Engine.Imp.Graphics.Desktop;
@@ -8,7 +8,7 @@ using System;
 
 namespace Fusee.ImGuiImp.Desktop
 {
-    struct UniformFieldInfo
+    internal struct UniformFieldInfo
     {
         public int Location;
         public string Name;
@@ -31,7 +31,7 @@ namespace Fusee.ImGuiImp.Desktop
     {
         private static bool _initialized = false;
 
-        private ImGuiController _controller;
+        private readonly ImGuiController _controller;
         private bool _isShuttingDown;
 
         public ImGuiRenderCanvasImp(ImageData? icon = null, int width = 1280, int height = 720, int minWidth = 360, int minHeight = 640) : base(icon, true, width, height, minWidth, minHeight)
@@ -45,8 +45,6 @@ namespace Fusee.ImGuiImp.Desktop
             {
                 //MUST be 0, is handled internally by ImGui. Other values will lead to AccessViolation Exception.
                 _gameWindow.UpdateFrequency = 0;
-                _gameWindow.RenderFrequency = 0;
-
                 _gameWindow.Run();
             }
         }
@@ -63,7 +61,9 @@ namespace Fusee.ImGuiImp.Desktop
         public override void DoInit()
         {
             _controller.InitImGUI(14, "Assets/Lato-Black.ttf");
+            
             base.DoInit();
+            ImGuiController.RecreateFontDeviceTexture();
             _initialized = true;
         }
 
@@ -71,14 +71,8 @@ namespace Fusee.ImGuiImp.Desktop
         {
             if (!_initialized) return;
             if (_isShuttingDown) return;
-
-            // HACK(mr): Fixme, don't know why
-            //Input.Instance.PreUpdate();
-
             base.DoUpdate();
             _controller.UpdateImGui(DeltaTimeUpdate);
-
-            //Input.Instance.PostUpdate();
         }
 
         public override void DoRender()
@@ -86,8 +80,12 @@ namespace Fusee.ImGuiImp.Desktop
             if (!_initialized) return;
             if (_controller.GameWindowWidth <= 0) return;
             if (_isShuttingDown) return;
-
             Input.Instance.PreUpdate();
+
+            if (ImGuiController.RecreateFontAtlas)
+                ImGuiController.RecreateFontDeviceTexture();
+
+            _controller.NewFrame();
 
             base.DoRender();
 
@@ -104,8 +102,8 @@ namespace Fusee.ImGuiImp.Desktop
 
         public override void DoResize(int width, int height)
         {
-            base.DoResize(width, height);
             _controller?.WindowResized(width, height);
+            base.DoResize(width, height);
         }
 
         public override void CloseGameWindow()

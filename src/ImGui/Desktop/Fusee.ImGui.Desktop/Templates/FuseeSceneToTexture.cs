@@ -11,9 +11,6 @@ namespace Fusee.ImGuiImp.Desktop.Templates
         private int _originalWidth;
         private int _originalHeight;
 
-        private int _lastWidth;
-        private int _lastHeight;
-
         private IShaderHandle? prgmHndl;
 
         protected RenderContext _rc;
@@ -50,7 +47,7 @@ namespace Fusee.ImGuiImp.Desktop.Templates
         /// This method is called from within <see cref="RenderToTexture(int, int)"/>.
         /// Insert your usual changes during resize, if necessary
         /// </summary>
-        protected virtual void Resize(int width, int height)
+        public virtual void Resize(int width, int height)
         {
 
         }
@@ -92,16 +89,8 @@ namespace Fusee.ImGuiImp.Desktop.Templates
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns>IntPtr to texture to use with <see cref="ImGuiNET.ImGui.Image(IntPtr, System.Numerics.Vector2)"/></returns>
-        public IntPtr RenderToTexture(int width, int height)
+        public IntPtr RenderToTexture()
         {
-            // prevent calls to resize every frame
-            if (_lastHeight != height || _lastWidth != width)
-            {
-                _lastWidth = width;
-                _lastHeight = height;
-                Resize(width, height);
-            }
-
             // Do the actual rendering
             var hndl = RenderAFrame();
             if (hndl == null) return IntPtr.Zero;

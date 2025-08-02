@@ -179,7 +179,7 @@ namespace Fusee.Examples.FuseeImGui.Desktop
             return _renderTexture?.TextureHandle;
         }
 
-        protected override void Resize(int width, int height)
+        public override void Resize(int width, int height)
         {
             if (width <= 0 || height <= 0)
                 return;
