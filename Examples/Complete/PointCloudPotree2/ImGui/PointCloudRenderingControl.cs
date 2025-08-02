@@ -69,7 +69,7 @@ namespace Fusee.Examples.PointCloudPotree2.Gui
         }
 
         // Is called when the window was resized
-        protected override void Resize(int width, int height)
+        public override void Resize(int width, int height)
         {
             // set size from extern
             _pointRenderingCore.ExternalCanvasSize = new Math.Core.int2(width, height);

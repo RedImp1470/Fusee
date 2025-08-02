@@ -81,7 +81,7 @@ namespace Fusee.Base.Core
         /// <summary>
         /// Snapshot of the caches keys as <see cref="ICollection"/>.
         /// </summary>
-        public IEnumerable<TKey> GetKeys => _cache.GetKeys<TKey>();
+        public IEnumerable<TKey> Keys => _cache.Keys.OfType<TKey>();
 
         /// <summary>
         /// Gets the number of items in the cache for diagnostic purposes.

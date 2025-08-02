@@ -1,4 +1,4 @@
-﻿using Fusee.Base.Core;
+using Fusee.Base.Core;
 using Fusee.Engine.Common;
 using Fusee.Engine.Core;
 using Fusee.Engine.Imp.Graphics.Desktop;
@@ -61,7 +61,9 @@ namespace Fusee.ImGuiImp.Desktop
         public override void DoInit()
         {
             _controller.InitImGUI(14, "Assets/Lato-Black.ttf");
+            
             base.DoInit();
+            ImGuiController.RecreateFontDeviceTexture();
             _initialized = true;
         }
 
@@ -69,14 +71,8 @@ namespace Fusee.ImGuiImp.Desktop
         {
             if (!_initialized) return;
             if (_isShuttingDown) return;
-
-            // Check if window is minimized - else imgui will throw an assert:
-            // ((g.FrameCount == 0 || g.FrameCountEnded == g.FrameCount)  && "Forgot to call Render() or EndFrame() at the end of the previous frame?"
-            if (Width > 0 && Height > 0)
-            {
-                base.DoUpdate();
-                _controller.UpdateImGui(DeltaTimeUpdate);
-            }
+            base.DoUpdate();
+            _controller.UpdateImGui(DeltaTimeUpdate);
         }
 
         public override void DoRender()
@@ -85,6 +81,11 @@ namespace Fusee.ImGuiImp.Desktop
             if (_controller.GameWindowWidth <= 0) return;
             if (_isShuttingDown) return;
             Input.Instance.PreUpdate();
+
+            if (ImGuiController.RecreateFontAtlas)
+                ImGuiController.RecreateFontDeviceTexture();
+
+            _controller.NewFrame();
 
             base.DoRender();
 
@@ -101,8 +102,8 @@ namespace Fusee.ImGuiImp.Desktop
 
         public override void DoResize(int width, int height)
         {
-            base.DoResize(width, height);
             _controller?.WindowResized(width, height);
+            base.DoResize(width, height);
         }
 
         public override void CloseGameWindow()

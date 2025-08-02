@@ -619,7 +619,7 @@ namespace Fusee.ImGuiImp.Desktop.Templates
 
             // take the full width minus the button size
             ImGui.SetNextItemWidth(-createFolderButtonSize.X);
-            ImGui.InputTextWithHint($"", $"{CreateNewFolderHintTxt}", ref _newFolderName, 4096, ImGuiInputTextFlags.AutoSelectAll | ImGuiInputTextFlags.CallbackAlways, (x) =>
+            ImGui.InputTextWithHint("##", $"{CreateNewFolderHintTxt}", ref _newFolderName, 4096, ImGuiInputTextFlags.AutoSelectAll | ImGuiInputTextFlags.CallbackAlways, (x) =>
             {
                 var arr = _newFolderName.ToCharArray();
 
