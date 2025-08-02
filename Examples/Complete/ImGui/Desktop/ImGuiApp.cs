@@ -34,6 +34,9 @@ namespace Fusee.Examples.FuseeImGui.Desktop
         {
             SetImGuiDesign();
 
+            // Enable Dockspace
+            ImGui.GetIO().ConfigFlags |= ImGuiConfigFlags.DockingEnable;
+
             _fuControl = new SceneToTexture(RC);
             _fuControl.Init();
 
@@ -66,11 +69,10 @@ namespace Fusee.Examples.FuseeImGui.Desktop
             _fuControl.UpdateOriginalGameWindowDimensions(e.Width, e.Height);
         }
 
+        private Vector2 _oldFusViewPortSize;
+
         public override void RenderAFrame()
         {
-            // Enable Dockspace
-            ImGui.GetIO().ConfigFlags |= ImGuiConfigFlags.DockingEnable;
-
             // Set Window flags for Dockspace
             var wndDockspaceFlags =
                     ImGuiWindowFlags.NoDocking
@@ -111,27 +113,28 @@ namespace Fusee.Examples.FuseeImGui.Desktop
             ImGui.Begin("Viewport",
               ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse);
 
-            var parentMin = ImGui.GetWindowContentRegionMin();
-            var parentMax = ImGui.GetWindowContentRegionMax();
-            var size = parentMax - parentMin;
+            var size = ImGui.GetContentRegionAvail();
 
             // Using a Child allow to fill all the space of the window.
             // It also allows customization
-            ImGui.BeginChild("GameRender", size, true, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove);
+            ImGui.BeginChild("GameRender", size, ImGuiChildFlags.None, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove);
 
-            var fuseeViewportMin = ImGui.GetWindowContentRegionMin();
-            var fuseeViewportMax = ImGui.GetWindowContentRegionMax();
-            var fuseeViewportSize = fuseeViewportMax - fuseeViewportMin;
+            var fuseeViewportSize = ImGui.GetContentRegionAvail();
 
-            ImGui.Image(_fuControl.RenderToTexture((int)size.X, (int)size.Y), fuseeViewportSize,
+            //Handles ImGui internal widget/dockspace resize
+            if (fuseeViewportSize != _oldFusViewPortSize)
+                _fuControl.Resize((int)fuseeViewportSize.X, (int)fuseeViewportSize.Y);
+
+            ImGui.Image(_fuControl.RenderToTexture(), fuseeViewportSize,
                 new Vector2(0, 1),
                 new Vector2(1, 0));
 
             // check if mouse is inside window, if true, accept update() inputs
             _isMouseInsideFuControl = ImGui.IsItemHovered();
 
-            ImGui.EndChild();
-            ImGui.End();
+            ImGui.EndChild();   //GameRender
+            ImGui.End();        //Viewport
+            ImGui.End();        //DockSpace
 
             ImGui.Begin("ImageWnd");
 
@@ -141,6 +144,8 @@ namespace Fusee.Examples.FuseeImGui.Desktop
             ImGui.End();
 
             DrawGUI();
+
+            _oldFusViewPortSize = fuseeViewportSize;
         }
 
         internal void DrawGUI()
@@ -158,31 +163,32 @@ namespace Fusee.Examples.FuseeImGui.Desktop
 
 
             ImGui.Text("SceneGraph");
-            ImGui.BeginTable("SceneGraph", 3, ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingMask | ImGuiTableFlags.Borders);
-
-            ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.DefaultSort, 50);
-            ImGui.TableSetupColumn("Type", ImGuiTableColumnFlags.DefaultSort, 100);
-            ImGui.TableSetupColumn("Value", ImGuiTableColumnFlags.DefaultSort, 500);
-
-            ImGui.TableHeadersRow();
-
-            foreach (var element in allSceneElements)
+            if (ImGui.BeginTable("SceneGraph", 3, ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingMask | ImGuiTableFlags.Borders))
             {
-                ImGui.TableNextColumn();
-                ImGui.Text(element.Name);
-                ImGui.TableNextColumn();
-                ImGui.Text(element.Type.FullName);
-                ImGui.TableNextColumn();
-                ImGui.Text(element.Value);
-                ImGui.TableNextRow();
+
+                ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.DefaultSort, 50);
+                ImGui.TableSetupColumn("Type", ImGuiTableColumnFlags.DefaultSort, 100);
+                ImGui.TableSetupColumn("Value", ImGuiTableColumnFlags.DefaultSort, 500);
+
+                ImGui.TableHeadersRow();
+
+                foreach (var element in allSceneElements)
+                {
+                    ImGui.TableNextColumn();
+                    ImGui.Text(element.Name);
+                    ImGui.TableNextColumn();
+                    ImGui.Text(element.Type.FullName);
+                    ImGui.TableNextColumn();
+                    ImGui.Text(element.Value);
+                    ImGui.TableNextRow();
+                }
+                ImGui.EndTable();
             }
-            ImGui.EndTable();
 
             ImGui.Spacing();
             ImGui.Spacing();
             ImGui.Spacing();
             ImGui.Separator();
-
 
             ImGui.BeginGroup();
 
@@ -305,7 +311,7 @@ namespace Fusee.Examples.FuseeImGui.Desktop
             colors[(int)ImGuiCol.HeaderActive] = new Vector4(0.71f, 0.78f, 0.69f, 1.00f);
             colors[(int)ImGuiCol.Tab] = new Vector4(0.39f, 0.39f, 0.39f, 1.00f);
             colors[(int)ImGuiCol.TabHovered] = new Vector4(0.26f, 0.59f, 0.98f, 0.78f);
-            colors[(int)ImGuiCol.TabActive] = new Vector4(0.26f, 0.59f, 0.98f, 1.00f);
+            colors[(int)ImGuiCol.TabSelected] = new Vector4(0.26f, 0.59f, 0.98f, 1.00f);
             colors[(int)ImGuiCol.Separator] = new Vector4(0.39f, 0.39f, 0.39f, 1.00f);
             colors[(int)ImGuiCol.SeparatorHovered] = new Vector4(0.14f, 0.44f, 0.80f, 0.78f);
             colors[(int)ImGuiCol.SeparatorActive] = new Vector4(0.14f, 0.44f, 0.80f, 1.00f);
@@ -319,7 +325,7 @@ namespace Fusee.Examples.FuseeImGui.Desktop
             colors[(int)ImGuiCol.TextSelectedBg] = new Vector4(0.26f, 0.59f, 0.98f, 0.35f);
             //colors[(int)ImGuiCol.ModalWindowDarkening] = new Vector4(0.20f, 0.20f, 0.20f, 0.35f);
             colors[(int)ImGuiCol.DragDropTarget] = new Vector4(0.26f, 0.59f, 0.98f, 0.95f);
-            colors[(int)ImGuiCol.NavHighlight] = colors[(int)ImGuiCol.HeaderHovered];
+            //colors[(int)ImGuiCol.NavHighlight] = colors[(int)ImGuiCol.HeaderHovered];
             colors[(int)ImGuiCol.NavWindowingHighlight] = new Vector4(0.70f, 0.70f, 0.70f, 0.70f);
 
             colors[(int)ImGuiCol.TableBorderLight] = new Vector4(0.70f, 0.70f, 0.70f, 0.70f);

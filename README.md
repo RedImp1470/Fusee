@@ -6,7 +6,7 @@ a strong emphasis on content transformation and manipulation.
 
 Fusee is written mainly in C# and can be programmed in C#. 
 
-| master | develop |
+| main | develop |
 | ------ | ------- |
 | [![CI](https://github.com/RedImp1470/Fusee/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/FUSEEProjectTeam/Fusee/actions/workflows/ci.yml) | [![CI](https://github.com/RedImp1470/Fusee/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/RedImp1470/Fusee/actions/workflows/ci.yml) |
 
