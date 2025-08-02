@@ -12,6 +12,6 @@ and native HTML5/WebGL Javascript code.
 
 | master | develop |
 | ------ | ------- |
-| [![CI](https://github.com/FUSEEProjectTeam/Fusee/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/FUSEEProjectTeam/Fusee/actions/workflows/ci.yml) | [![CI](https://github.com/FUSEEProjectTeam/Fusee/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/FUSEEProjectTeam/Fusee/actions/workflows/ci.yml) |
+| [![CI](https://github.com/RedImp1470/Fusee/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/FUSEEProjectTeam/Fusee/actions/workflows/ci.yml) | [![CI](https://github.com/RedImp1470/Fusee/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/RedImp1470/Fusee/actions/workflows/ci.yml) |
 
 Use Fusee in your project: [![Nuget](https://img.shields.io/nuget/v/Fusee.Core?style=flat)](https://www.nuget.org/profiles/FUSEEProjectTeam)
