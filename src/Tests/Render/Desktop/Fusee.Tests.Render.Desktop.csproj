@@ -6,11 +6,9 @@
 		<StartupObject>Fusee.Tests.Render.Desktop.Run</StartupObject>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	<ItemGroup>		
 		<ProjectReference Include="$(FuseeEngineRoot)\src\Base\Imp\Desktop\Fusee.Base.Imp.Desktop.csproj" />
 		<ProjectReference Include="$(FuseeEngineRoot)\src\Engine\Imp\Graphics\Desktop\Fusee.Engine.Imp.Graphics.Desktop.csproj" />
-
 		<ProjectReference Include="$(FuseeEngineRoot)\Examples\Complete\AdvancedUI\Core\Fusee.Examples.AdvancedUI.Core.csproj" />
 		<ProjectReference Include="$(FuseeEngineRoot)\Examples\Complete\Camera\Core\Fusee.Examples.Camera.Core.csproj" />
 		<ProjectReference Include="$(FuseeEngineRoot)\Examples\Complete\ComputeFractal\Core\Fusee.Examples.ComputeFractal.Core.csproj" />
@@ -25,7 +23,8 @@
 		<ProjectReference Include="$(FuseeEngineRoot)\Examples\Complete\Simple\Core\Fusee.Examples.Simple.Core.csproj" />
 		<ProjectReference Include="$(FuseeEngineRoot)\Examples\Complete\Deferred\Core\Fusee.Examples.Deferred.Core.csproj" />
 		<ProjectReference Include="$(FuseeEngineRoot)\Examples\Complete\UI\Core\Fusee.Examples.UI.Core.csproj" />
-
+    
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
 		<PackageReference Include="NUnit" Version="4.3.2" />
 		<PackageReference Include="NUnitLite" Version="4.3.2" />
