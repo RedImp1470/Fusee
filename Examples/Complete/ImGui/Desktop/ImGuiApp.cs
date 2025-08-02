@@ -69,6 +69,8 @@ namespace Fusee.Examples.FuseeImGui.Desktop
             _fuControl.UpdateOriginalGameWindowDimensions(e.Width, e.Height);
         }
 
+        private Vector2 _oldFusViewPortSize;
+
         public override void RenderAFrame()
         {
             // Set Window flags for Dockspace
@@ -119,7 +121,11 @@ namespace Fusee.Examples.FuseeImGui.Desktop
 
             var fuseeViewportSize = ImGui.GetContentRegionAvail();
 
-            ImGui.Image(_fuControl.RenderToTexture((int)size.X, (int)size.Y), fuseeViewportSize,
+            //Handles ImGui internal widget/dockspace resize
+            if (fuseeViewportSize != _oldFusViewPortSize)
+                _fuControl.Resize((int)fuseeViewportSize.X, (int)fuseeViewportSize.Y);
+
+            ImGui.Image(_fuControl.RenderToTexture(), fuseeViewportSize,
                 new Vector2(0, 1),
                 new Vector2(1, 0));
 
@@ -138,6 +144,8 @@ namespace Fusee.Examples.FuseeImGui.Desktop
             ImGui.End();
 
             DrawGUI();
+
+            _oldFusViewPortSize = fuseeViewportSize;
         }
 
         internal void DrawGUI()

@@ -393,7 +393,7 @@ namespace Fusee.ImGuiImp.Desktop.Templates
             var offsetFromBottom = ImGui.CalcTextSize(PickedFolderTxt) + ImGui.GetStyle().FramePadding * 2 + ImGui.GetStyle().WindowPadding * 2;
             var driveSelectionWidth = ImGui.GetWindowSize().X * 0.25f; // 25% of windowSize.x
 
-            ImGui.BeginChild($"DriveSelection##{_folderPickerCount}", new Vector2(driveSelectionWidth, -offsetFromBottom.Y), ImGuiChildFlags.AlwaysUseWindowPadding, ImGuiWindowFlags.AlwaysAutoResize);
+            ImGui.BeginChild($"DriveSelection##{_folderPickerCount}", new Vector2(driveSelectionWidth, -offsetFromBottom.Y), ImGuiChildFlags.AlwaysUseWindowPadding | ImGuiChildFlags.AlwaysAutoResize | ImGuiChildFlags.AutoResizeX | ImGuiChildFlags.AutoResizeY);
             // Drive Selection
             var driveCount = 0;
             foreach (var drive in DriveInfo.GetDrives())
@@ -418,7 +418,7 @@ namespace Fusee.ImGuiImp.Desktop.Templates
             ImGui.SameLine();
             // take all space in y, however shrink in y in item height + standard padding + WindowPadding
             var offsetFromBottom = ImGui.CalcTextSize(PickedFolderTxt) + ImGui.GetStyle().FramePadding * 2 + ImGui.GetStyle().WindowPadding * 2;
-            if (ImGui.BeginChild($"#FolderBrowser##{_folderPickerCount}", new Vector2(-1, -offsetFromBottom.Y), ImGuiChildFlags.AlwaysUseWindowPadding, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.HorizontalScrollbar))
+            if (ImGui.BeginChild($"#FolderBrowser##{_folderPickerCount}", new Vector2(-1, -offsetFromBottom.Y), ImGuiChildFlags.AlwaysUseWindowPadding | ImGuiChildFlags.AlwaysAutoResize | ImGuiChildFlags.AutoResizeX | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.HorizontalScrollbar))
             {
                 var fileSystemEntries = GetFileSystemEntries(CurrentOpenFolder.FullName);
                 foreach (var fse in fileSystemEntries)
@@ -462,7 +462,7 @@ namespace Fusee.ImGuiImp.Desktop.Templates
             var pickedFileButtonSize = ImGui.CalcTextSize(PickedFolderTxt) + ImGui.GetStyle().FramePadding * 2;
             var cancelFileButtonSize = ImGui.CalcTextSize(CancelFolderOpenTxt) + ImGui.GetStyle().FramePadding * 2;
 
-            ImGui.BeginChild($"FolderSelector##{_folderPickerCount}", new Vector2(-1, -1), ImGuiChildFlags.None, ImGuiWindowFlags.AlwaysAutoResize);
+            ImGui.BeginChild($"FolderSelector##{_folderPickerCount}", new Vector2(-1, -1), ImGuiChildFlags.AlwaysAutoResize | ImGuiChildFlags.AutoResizeX | ImGuiChildFlags.AutoResizeY);
 
             // take all available window space minus the minus both buttons
             // push buttons therefore to the right
@@ -515,7 +515,7 @@ namespace Fusee.ImGuiImp.Desktop.Templates
 
             // take the full width minus the button size
             ImGui.SetNextItemWidth(-createFolderButtonSize.X);
-            ImGui.InputTextWithHint($"", $"{CreateNewFolderHintTxt}", ref _newFolderName, 4096, ImGuiInputTextFlags.AutoSelectAll | ImGuiInputTextFlags.CallbackAlways, (x) =>
+            ImGui.InputTextWithHint("##", $"{CreateNewFolderHintTxt}", ref _newFolderName, 4096, ImGuiInputTextFlags.AutoSelectAll | ImGuiInputTextFlags.CallbackAlways, (x) =>
             {
                 var arr = _newFolderName.ToCharArray();
 

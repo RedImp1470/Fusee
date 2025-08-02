@@ -84,8 +84,11 @@ namespace Fusee.Examples.PointCloudPotree2.Gui
 
         public override void Resize(ResizeEventArgs e)
         {
-            _fuControl?.UpdateOriginalGameWindowDimensions(e.Width, e.Height);
+            _fuControl.UpdateOriginalGameWindowDimensions(e.Width, e.Height);
+            _fuControl.Resize(e.Width, e.Height);
         }
+
+        private Vector2 _oldFusViewPortSize;
 
         public override void RenderAFrame()
         {
@@ -136,10 +139,11 @@ namespace Fusee.Examples.PointCloudPotree2.Gui
             ImGui.BeginChild("GameRender", size, ImGuiChildFlags.None, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove);
 
             var fuseeViewportSize = ImGui.GetContentRegionAvail();
-            var fuseeViewportPos = ImGui.GetWindowPos();
+            //Handles ImGui internal widget/dockspace resize
+            if (fuseeViewportSize != _oldFusViewPortSize)
+                _fuControl.Resize((int)fuseeViewportSize.X, (int)fuseeViewportSize.Y);
 
-            var hndl = _fuControl.RenderToTexture((int)fuseeViewportSize.X, (int)fuseeViewportSize.Y);
-
+            var hndl = _fuControl.RenderToTexture();
 
             ImGui.Image(hndl, fuseeViewportSize,
                 new Vector2(0, 1),
@@ -157,6 +161,8 @@ namespace Fusee.Examples.PointCloudPotree2.Gui
 
             if (_wantsToShutdown)
                 CloseGameWindow();
+
+            _oldFusViewPortSize = fuseeViewportSize;
         }
 
         private void Draw()
